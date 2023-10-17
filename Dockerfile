@@ -1,5 +1,5 @@
 FROM ubuntu:22.04
-COPY ./target/release/candles-flows-grpc ./target/release/candles-flows-grpc
+COPY ./target/release/trade-log-server ./target/release/trade-log-server
 
 ARG app_version
 ARG app_compilation_date
