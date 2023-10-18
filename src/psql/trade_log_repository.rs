@@ -20,7 +20,10 @@ impl TradeLogRepository {
                 settings_reader.clone(),
                 service_sdk::my_logger::LOGGER.clone(),
             )
-            .with_table_schema_verification::<TradeLogDbModel>(TABLE_NAME, None)
+            .with_table_schema_verification::<TradeLogDbModel>(
+                TABLE_NAME,
+                Some(format!("tradelog_PK")),
+            )
             .build()
             .await,
         }
