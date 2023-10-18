@@ -5,7 +5,9 @@ use service_sdk::my_postgres::macros::{InsertDbEntity, SelectDbEntity, TableSche
 
 #[derive(TableSchema, InsertDbEntity, SelectDbEntity, Debug, Clone)]
 pub struct TradeLogDbModel {
+    #[primary_key(0)]
     pub trader_id: String,
+    #[primary_key(1)]
     pub account_id: String,
     pub component: String,
     pub process_id: Option<String>,
@@ -14,6 +16,7 @@ pub struct TradeLogDbModel {
     #[json]
     pub data: Vec<TradeLogDbDataModel>,
     #[sql_type("timestamp")]
+    #[primary_key(2)]
     pub date: DateTimeAsMicroseconds,
 }
 
