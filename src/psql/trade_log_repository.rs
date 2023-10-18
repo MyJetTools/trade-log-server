@@ -4,7 +4,7 @@ use service_sdk::{my_postgres::MyPostgres, my_telemetry::MyTelemetryContext, Ser
 
 use crate::settings::SettingsReader;
 
-use super::TradeLogDbModel;
+use super::{QueryTradeLog, TradeLogDbModel};
 
 const TABLE_NAME: &str = "trade_log";
 
@@ -31,5 +31,16 @@ impl TradeLogRepository {
             .insert_db_entity(&log, TABLE_NAME, Some(telemetry))
             .await
             .unwrap();
+    }
+
+    pub async fn query(
+        &self,
+        query: QueryTradeLog,
+        telemetry: &MyTelemetryContext,
+    ) -> Vec<TradeLogDbModel> {
+        self.postgres
+            .query_rows(TABLE_NAME, Some(&query), Some(telemetry))
+            .await
+            .unwrap()
     }
 }

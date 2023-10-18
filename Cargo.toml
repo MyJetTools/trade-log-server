@@ -9,8 +9,14 @@ edition = "2021"
 service-sdk = { tag = "0.2.3", git = "https://github.com/MyJetTools/service-sdk.git", features = [
     "my-service-bus",
     "postgres",
+    "grpc",
 ] }
 trade-log = {git = "https://github.com/MyJetTools/trade-log", tag = "0.1.0"}
 rust-extensions = { tag = "0.1.3", git = "https://github.com/MyJetTools/rust-extensions.git" }
 serde = {version = "*", features = ["derive"]}
 tokio = "*"
+prost = "*"
+prost-types = "*"
+tonic = { version = "*", features = ["tls", "tls-roots", "prost"] }
+[build-dependencies]
+tonic-build = { version = "0.10.0", features = ["prost"] }
