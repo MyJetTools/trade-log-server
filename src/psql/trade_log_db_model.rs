@@ -20,7 +20,7 @@ pub struct TradeLogDbModel {
     pub date: DateTimeAsMicroseconds,
 }
 
-#[derive(WhereDbModel)]
+#[derive(WhereDbModel, Debug)]
 pub struct QueryTradeLog {
     #[ignore_if_none]
     pub trader_id: Option<String>,

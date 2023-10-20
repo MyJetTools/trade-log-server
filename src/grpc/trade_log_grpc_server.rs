@@ -34,7 +34,7 @@ impl TradeLogGrpcService for GrpcService {
         request: tonic::Request<QueryTradeLogGrpcRequest>,
     ) -> Result<tonic::Response<Self::QueryStream>, tonic::Status> {
         let request = request.into_inner();
-
+        println!("request: {:#?}", request);
         let date_from = match request.date_from {
             Some(src) => Some(src.into()),
             None => None,

@@ -41,6 +41,8 @@ impl TradeLogRepository {
         query: QueryTradeLog,
         telemetry: &MyTelemetryContext,
     ) -> Vec<TradeLogDbModel> {
+
+        println!("query: {:#?}", query);
         self.postgres
             .query_rows(TABLE_NAME, Some(&query), Some(telemetry))
             .await
