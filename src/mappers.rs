@@ -1,6 +1,9 @@
 use trade_log::contracts::{TradeLogSbModel, TradeLogSbModelDataItem};
 
-use crate::psql::{TradeLogDbDataModel, TradeLogDbModel};
+use crate::{
+    psql::{TradeLogDbDataModel, TradeLogDbModel},
+    settings::SettingsReader,
+};
 
 impl Into<TradeLogDbModel> for TradeLogSbModel {
     fn into(self) -> TradeLogDbModel {
@@ -32,4 +35,17 @@ impl Into<TradeLogDbDataModel> for TradeLogSbModelDataItem {
             value: self.value,
         }
     }
+}
+
+pub fn sanitize_csharp_grpc_string(src: Option<String>) -> Option<String> {
+    let Some(src) = src else {
+        return None;
+    };
+
+    let mut str = src;
+    str = str.replace("\n", "");
+    str = str.replace("$", "");
+    str = str.replace("\t", "");
+
+    return Some(str);
 }

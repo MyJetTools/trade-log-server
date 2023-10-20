@@ -7,7 +7,7 @@ use crate::{
     trade_log_grpc::{
         trade_log_grpc_service_server::TradeLogGrpcService, QueryTradeLogGrpcRequest,
         TradeLogGrpcModel,
-    },
+    }, mappers::sanitize_csharp_grpc_string,
 };
 use service_sdk::my_grpc_extensions;
 
@@ -46,13 +46,13 @@ impl TradeLogGrpcService for GrpcService {
         };
 
         let query = QueryTradeLog {
-            trader_id: request.trader_id,
-            account_id: request.account_id,
-            component: request.component,
-            process_id: request.process_id,
-            operation_id: request.operation_id,
+            trader_id: sanitize_csharp_grpc_string(request.trader_id),
+            account_id: sanitize_csharp_grpc_string(request.account_id),
+            component: sanitize_csharp_grpc_string(request.component),
+            process_id: sanitize_csharp_grpc_string(request.process_id),
+            operation_id: sanitize_csharp_grpc_string(request.operation_id),
             date_from,
-            date_to: date_to,
+            date_to,
         };
 
         let models = self.repository.query(query, &my_telemetry).await;
