@@ -22,18 +22,25 @@ pub struct TradeLogDbModel {
 
 #[derive(WhereDbModel)]
 pub struct QueryTradeLog {
+    #[ignore_if_none]
     pub trader_id: Option<String>,
+    #[ignore_if_none]
     pub account_id: Option<String>,
+    #[ignore_if_none]
     pub component: Option<String>,
+    #[ignore_if_none]
     pub process_id: Option<String>,
+    #[ignore_if_none]
     pub operation_id: Option<String>,
     #[sql_type("timestamp")]
     #[db_column_name("date")]
     #[operator(">=")]
+    #[ignore_if_none]
     pub date_from: Option<DateTimeAsMicroseconds>,
     #[db_column_name("date")]
     #[sql_type("timestamp")]
     #[operator("<")]
+    #[ignore_if_none]
     pub date_to: Option<DateTimeAsMicroseconds>,
 }
 
