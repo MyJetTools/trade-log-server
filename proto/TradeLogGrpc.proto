@@ -20,6 +20,7 @@ message TradeLogGrpcModel{
     optional string OperationId = 5;
     map<string, string> Data = 6;
     uint64 Date = 7;
+    string Message = 8;
 }
 
 service TradeLogGrpcService {

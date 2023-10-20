@@ -10,6 +10,7 @@ impl Into<TradeLogGrpcModel> for TradeLogDbModel {
             operation_id: self.operation_id,
             data: self.data.into_iter().map(|x| (x.key, x.value)).collect(),
             date: self.date.unix_microseconds as u64,
+            message: self.message
         }
     }
 }
