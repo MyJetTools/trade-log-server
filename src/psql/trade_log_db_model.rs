@@ -28,8 +28,12 @@ pub struct QueryTradeLog {
     pub process_id: Option<String>,
     pub operation_id: Option<String>,
     #[sql_type("timestamp")]
+    #[db_column_name("date")]
+    #[operator(">=")]
     pub date_from: Option<DateTimeAsMicroseconds>,
+    #[db_column_name("date")]
     #[sql_type("timestamp")]
+    #[operator("<")]
     pub date_to: Option<DateTimeAsMicroseconds>,
 }
 
