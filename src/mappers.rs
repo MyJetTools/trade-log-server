@@ -1,9 +1,6 @@
 use trade_log::contracts::{TradeLogSbModel, TradeLogSbModelDataItem};
 
-use crate::{
-    psql::{TradeLogDbDataModel, TradeLogDbModel},
-    settings::SettingsReader,
-};
+use crate::psql::{TradeLogDbDataModel, TradeLogDbModel};
 
 impl Into<TradeLogDbModel> for TradeLogSbModel {
     fn into(self) -> TradeLogDbModel {

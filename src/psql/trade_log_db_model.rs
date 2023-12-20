@@ -1,7 +1,5 @@
-use rust_extensions::date_time::DateTimeAsMicroseconds;
 use serde::{Deserialize, Serialize};
-use service_sdk::my_postgres;
-use service_sdk::my_postgres::macros::{InsertDbEntity, SelectDbEntity, TableSchema, WhereDbModel};
+service_sdk::macros::use_my_postgres!();
 
 #[derive(TableSchema, InsertDbEntity, SelectDbEntity, Debug, Clone)]
 pub struct TradeLogDbModel {
