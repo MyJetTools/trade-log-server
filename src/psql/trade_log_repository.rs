@@ -22,7 +22,7 @@ impl TradeLogRepository {
             )
             .with_table_schema_verification::<TradeLogDbModel>(
                 TABLE_NAME,
-                Some(format!("tradelog_PK")),
+                None
             )
             .build()
             .await,
