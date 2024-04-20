@@ -7,16 +7,16 @@ pub struct TradeLogDbModel {
     pub trader_id: String,
     #[primary_key(1)]
     pub account_id: String,
-    pub component: String,
-    pub process_id: Option<String>,
-    #[primary_key(3)]
-    pub operation_id: Option<String>,
-    pub message: String,
-    #[json]
-    pub data: Vec<TradeLogDbDataModel>,
     #[sql_type("timestamp")]
     #[primary_key(2)]
     pub date: DateTimeAsMicroseconds,
+    #[primary_key(3)]
+    pub component: String,
+    pub operation_id: Option<String>,
+    pub process_id: Option<String>,
+    pub message: String,
+    #[json]
+    pub data: Vec<TradeLogDbDataModel>,
 }
 
 #[derive(WhereDbModel, Debug)]
