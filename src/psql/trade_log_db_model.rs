@@ -9,6 +9,7 @@ pub struct TradeLogDbModel {
     pub account_id: String,
     pub component: String,
     pub process_id: Option<String>,
+    #[primary_key(3)]
     pub operation_id: Option<String>,
     pub message: String,
     #[json]

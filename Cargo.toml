@@ -20,4 +20,4 @@ prost-types = "*"
 tonic = { version = "*", features = ["tls", "tls-roots", "prost"] }
 
 [build-dependencies]
-tonic-build = { version = "0.10.0", features = ["prost"] }
+tonic-build = { version = "*", features = ["prost"] }

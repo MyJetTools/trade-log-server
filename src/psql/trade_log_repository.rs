@@ -7,6 +7,7 @@ use crate::settings::SettingsReader;
 use super::{QueryTradeLog, TradeLogDbModel};
 
 const TABLE_NAME: &str = "trade_log";
+const TABLE_NAME_PK: &str = "trade_log_pk";
 
 pub struct TradeLogRepository {
     postgres: MyPostgres,
@@ -22,7 +23,7 @@ impl TradeLogRepository {
             )
             .with_table_schema_verification::<TradeLogDbModel>(
                 TABLE_NAME,
-                None
+                Some(TABLE_NAME_PK.into()),
             )
             .build()
             .await,
@@ -41,7 +42,6 @@ impl TradeLogRepository {
         query: QueryTradeLog,
         telemetry: &MyTelemetryContext,
     ) -> Vec<TradeLogDbModel> {
-
         println!("query: {:#?}", query);
         self.postgres
             .query_rows(TABLE_NAME, Some(&query), Some(telemetry))
