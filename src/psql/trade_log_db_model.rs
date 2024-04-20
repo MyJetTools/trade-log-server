@@ -9,6 +9,7 @@ pub struct TradeLogDbModel {
     pub account_id: String,
     #[sql_type("timestamp")]
     #[primary_key(2)]
+    #[db_index(id:0, index_name:"trade_log_date_idx", is_unique:false, order:"ASC")]
     pub date: DateTimeAsMicroseconds,
     #[primary_key(3)]
     pub component: String,
