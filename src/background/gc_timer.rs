@@ -1,22 +1,21 @@
 use std::{sync::Arc, time::Duration};
 
 use service_sdk::rust_extensions::{date_time::DateTimeAsMicroseconds, MyTimerTick};
-use tonic::async_trait;
 
 use crate::app::AppContext;
 
-pub struct TradeLogGc {
+pub struct TradeLogGcTimer {
     pub app: Arc<AppContext>,
 }
 
-impl TradeLogGc {
+impl TradeLogGcTimer {
     pub fn new(app: Arc<AppContext>) -> Self {
         Self { app }
     }
 }
 
 #[async_trait::async_trait]
-impl MyTimerTick for TradeLogGc {
+impl MyTimerTick for TradeLogGcTimer {
     async fn tick(&self) {
         let days_before_gc = self.app.settings_reader.get_gc_days().await;
 

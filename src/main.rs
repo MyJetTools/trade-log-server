@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{sync::Arc, time::Duration};
 
 use grpc::GrpcService;
 use my_sb::TradeLogSbListener;
@@ -34,6 +34,13 @@ async fn main() {
         builder.add_grpc_service(TradeLogGrpcServiceServer::new(GrpcService::new(
             app.clone(),
         )));
+    });
+
+    service_context.register_timer(Duration::from_secs(30), |builder| {
+        builder.register_timer(
+            "GcTimer",
+            Arc::new(background::TradeLogGcTimer::new(app.clone())),
+        );
     });
 
     service_context.start_application().await;
