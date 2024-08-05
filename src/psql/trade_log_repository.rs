@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{sync::Arc, time::Duration};
 
 use service_sdk::{
     my_postgres::MyPostgres, my_telemetry::MyTelemetryContext,
@@ -33,12 +33,13 @@ impl TradeLogRepository {
         }
     }
 
-    pub async fn add_logs(
+    pub async fn bulk_insert(
         &self,
         entities: &[TradeLogDbModel],
         telemetry: Option<&MyTelemetryContext>,
-    ) {
+    ) -> Result<(), service_sdk::my_postgres::MyPostgresError> {
         self.postgres
+            .with_retries(3, Duration::from_secs(3))
             .bulk_insert_or_update_db_entity(
                 TABLE_NAME,
                 service_sdk::my_postgres::UpdateConflictType::OnPrimaryKeyConstraint(
@@ -48,7 +49,24 @@ impl TradeLogRepository {
                 telemetry,
             )
             .await
-            .unwrap();
+    }
+
+    pub async fn add_log(
+        &self,
+        entity: &TradeLogDbModel,
+        telemetry: Option<&MyTelemetryContext>,
+    ) -> Result<(), service_sdk::my_postgres::MyPostgresError> {
+        self.postgres
+            .with_retries(3, Duration::from_secs(3))
+            .insert_or_update_db_entity(
+                TABLE_NAME,
+                service_sdk::my_postgres::UpdateConflictType::OnPrimaryKeyConstraint(
+                    TABLE_NAME_PK.into(),
+                ),
+                entity,
+                telemetry,
+            )
+            .await
     }
 
     pub async fn query(
