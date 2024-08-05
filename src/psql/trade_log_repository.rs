@@ -1,10 +1,13 @@
 use std::sync::Arc;
 
-use service_sdk::{my_postgres::MyPostgres, my_telemetry::MyTelemetryContext, ServiceInfo};
+use service_sdk::{
+    my_postgres::MyPostgres, my_telemetry::MyTelemetryContext,
+    rust_extensions::date_time::DateTimeAsMicroseconds, ServiceInfo,
+};
 
 use crate::settings::SettingsReader;
 
-use super::{QueryTradeLog, TradeLogDbModel};
+use super::{GcWhereModel, QueryTradeLog, TradeLogDbModel};
 
 const TABLE_NAME: &str = "trade_log";
 const TABLE_NAME_PK: &str = "trade_log_pk";
@@ -30,9 +33,20 @@ impl TradeLogRepository {
         }
     }
 
-    pub async fn add_log(&self, log: TradeLogDbModel, telemetry: &MyTelemetryContext) {
+    pub async fn add_logs(
+        &self,
+        entities: &[TradeLogDbModel],
+        telemetry: Option<&MyTelemetryContext>,
+    ) {
         self.postgres
-            .insert_db_entity(&log, TABLE_NAME, Some(telemetry))
+            .bulk_insert_or_update_db_entity(
+                TABLE_NAME,
+                service_sdk::my_postgres::UpdateConflictType::OnPrimaryKeyConstraint(
+                    TABLE_NAME_PK.into(),
+                ),
+                entities,
+                telemetry,
+            )
             .await
             .unwrap();
     }
@@ -45,6 +59,14 @@ impl TradeLogRepository {
         println!("query: {:#?}", query);
         self.postgres
             .query_rows(TABLE_NAME, Some(&query), Some(telemetry))
+            .await
+            .unwrap()
+    }
+
+    pub async fn gc(&self, from: DateTimeAsMicroseconds) {
+        let where_model = GcWhereModel { date: from };
+        self.postgres
+            .delete_db_entity(TABLE_NAME, &where_model, None)
             .await
             .unwrap()
     }

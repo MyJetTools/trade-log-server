@@ -3,22 +3,24 @@ use std::{pin::Pin, sync::Arc};
 use service_sdk::{futures_core::Stream, my_grpc_extensions::server::with_telemetry};
 
 use crate::{
-    psql::{QueryTradeLog, TradeLogRepository},
+    app::AppContext,
+    mappers::sanitize_csharp_grpc_string,
+    psql::QueryTradeLog,
     trade_log_grpc::{
         trade_log_grpc_service_server::TradeLogGrpcService, QueryTradeLogGrpcRequest,
         TradeLogGrpcModel,
-    }, mappers::sanitize_csharp_grpc_string,
+    },
 };
 use service_sdk::my_grpc_extensions;
 
 #[derive(Clone)]
 pub struct GrpcService {
-    pub repository: Arc<TradeLogRepository>,
+    pub app: Arc<AppContext>,
 }
 
 impl GrpcService {
-    pub fn new(repository: Arc<TradeLogRepository>) -> Self {
-        Self { repository }
+    pub fn new(app: Arc<AppContext>) -> Self {
+        Self { app }
     }
 }
 
@@ -55,7 +57,7 @@ impl TradeLogGrpcService for GrpcService {
             date_to,
         };
 
-        let models = self.repository.query(query, &my_telemetry).await;
+        let models = self.app.repo.query(query, &my_telemetry).await;
         let response =
             my_grpc_extensions::grpc_server::send_vec_to_stream(models.into_iter(), |x| x.into())
                 .await;

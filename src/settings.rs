@@ -16,4 +16,12 @@ pub struct SettingsModel {
     pub my_sb_tcp_host_port: String,
     pub my_telemetry: String,
     pub seq_conn_string: String,
+    pub gc_days: u32,
+}
+
+impl SettingsReader {
+    pub async fn get_gc_days(&self) -> u32 {
+        let read_access = self.settings.read().await;
+        read_access.gc_days
+    }
 }

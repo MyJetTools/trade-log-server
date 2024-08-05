@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 service_sdk::macros::use_my_postgres!();
 
-#[derive(TableSchema, InsertDbEntity, SelectDbEntity, Debug, Clone)]
+#[derive(TableSchema, InsertDbEntity, UpdateDbEntity, SelectDbEntity, Debug, Clone)]
 pub struct TradeLogDbModel {
     #[primary_key(0)]
     pub trader_id: String,
@@ -48,4 +48,10 @@ pub struct QueryTradeLog {
 pub struct TradeLogDbDataModel {
     pub key: String,
     pub value: String,
+}
+
+#[derive(Debug, WhereDbModel)]
+pub struct GcWhereModel {
+    #[operator("<")]
+    pub date: DateTimeAsMicroseconds,
 }
