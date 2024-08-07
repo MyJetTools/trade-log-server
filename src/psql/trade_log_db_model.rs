@@ -53,5 +53,6 @@ pub struct TradeLogDbDataModel {
 #[derive(Debug, WhereDbModel)]
 pub struct GcWhereModel {
     #[operator("<")]
+    #[sql_type("timestamp")]
     pub date: DateTimeAsMicroseconds,
 }

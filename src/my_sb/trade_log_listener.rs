@@ -85,6 +85,7 @@ impl SubscriberCallback<TradeLogSbModel> for TradeLogSbListener {
             .await;
 
         for not_inserted in not_inserted {
+            println!("Message not confirmed: {:#?}", not_inserted);
             messages_reader.mark_as_not_delivered(not_inserted);
         }
 
